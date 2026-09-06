@@ -31,6 +31,7 @@
 // Author: Michael Ferguson
 
 #include <memory>
+#include <atomic>
 #include <string>
 #include <vector>
 
@@ -91,7 +92,7 @@ public:
     }
 
     // Range filter for cloud
-    range_filter_.setFilterFieldName("z");
+    range_filter_.setFilterFieldName(this->declare_parameter<std::string>("range_field_name", "z"));
     range_filter_.setFilterLimits(0, 2.5);
 
     // Setup TF2
@@ -104,7 +105,7 @@ public:
     // cloud_sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
     //     "/wrist_rgbd_depth_sensor/points", points_qos,
     //     std::bind(&BasicGraspingPerception::cloud_callback, this, _1));
-    points_qos.reliable();
+    points_qos.best_effort();
     cloud_sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
         "/wrist_rgbd_depth_sensor/points", points_qos,
         std::bind(&BasicGraspingPerception::cloud_callback, this, _1));
@@ -246,7 +247,7 @@ private:
   std::shared_ptr<tf2_ros::TransformListener> listener_;
   std::string world_frame_;
 
-  bool find_objects_;
+  std::atomic<bool> find_objects_;
   std::vector<grasping_msgs::msg::Object> objects_;
   std::vector<grasping_msgs::msg::Object> supports_;
 

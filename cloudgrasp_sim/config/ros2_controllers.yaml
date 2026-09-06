@@ -1,0 +1,40 @@
+arm_controller:
+  ros__parameters:
+    allow_nonzero_velocity_at_trajectory_end: true
+    command_interfaces:
+    - position
+    constraints:
+      goal_time: 5.0
+      stopped_velocity_tolerance: 0.1
+    joints:
+    - shoulder_pan_joint
+    - shoulder_lift_joint
+    - elbow_joint
+    - wrist_1_joint
+    - wrist_2_joint
+    - wrist_3_joint
+    state_interfaces:
+    - position
+    - velocity
+controller_manager:
+  ros__parameters:
+    arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+    gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    update_rate: 100
+gripper_controller:
+  ros__parameters:
+    allow_nonzero_velocity_at_trajectory_end: true
+    command_interfaces:
+    - position
+    constraints:
+      goal_time: 5.0
+      stopped_velocity_tolerance: 0.1
+    joints:
+    - robotiq_85_left_knuckle_joint
+    state_interfaces:
+    - position
+    - velocity

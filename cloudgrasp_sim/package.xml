@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<package format="3">
+  <name>cloudgrasp_sim</name>
+  <version>0.1.0</version>
+  <description>CloudGrasp Gazebo Harmonic simulation for ROS 2 Jazzy</description>
+  <maintainer email="user@example.com">CloudGrasp contributors</maintainer>
+  <license>BSD-3-Clause</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>rclcpp_action</depend>
+  <depend>moveit_ros_planning_interface</depend>
+  <depend>grasping_msgs</depend>
+  <depend>std_msgs</depend>
+  <exec_depend>ur_description</exec_depend>
+  <exec_depend>robotiq_description</exec_depend>
+  <exec_depend>gz_ros2_control</exec_depend>
+  <exec_depend>ros_gz_sim</exec_depend>
+  <exec_depend>ros_gz_bridge</exec_depend>
+  <exec_depend>simple_grasping</exec_depend>
+  <exec_depend>moveit_configs_utils</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>joint_state_broadcaster</exec_depend>
+  <exec_depend>joint_trajectory_controller</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

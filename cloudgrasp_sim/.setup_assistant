@@ -1,0 +1,6 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: cloudgrasp_sim
+    relative_path: urdf/ur5_gripper.urdf.xacro
+  srdf:
+    relative_path: config/cloudgrasp.srdf

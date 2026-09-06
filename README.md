@@ -1,3 +1,5 @@
+> **Ubuntu 24.04 / ROS 2 Jazzy 云服务器部署：** [中文部署与运行说明](cloudgrasp_sim/README.zh-CN.md)。新增 `cloudgrasp_sim` 补齐 Gazebo Harmonic 场景、机器人与相机、控制器和经过物体位移验证的抓取流程。原始 Humble 文档保留在下方。
+
 # ROS2 Manipulation Project with Vision-Based Object Detection and Grasping
 
 ## Project Overview
