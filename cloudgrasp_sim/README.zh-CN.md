@@ -21,7 +21,7 @@
 
 ## 云桌面使用
 
-1. 点击 **CloudGrasp - Start Simulation**，等待 Gazebo、RViz、机械臂与点云出现。
+1. 点击 **CloudGrasp - Start Simulation**，等待终端输出 `Simulation ready. You can run pick.sh.`。仅出现窗口不代表控制器已就绪。
 2. 点击 **CloudGrasp - Run Pick and Place**。
 3. 成功时终端输出 `PHYSICAL_PICK_PLACE_PASS`，对应 JSON 保存最高抬升高度、最终位置及采样轨迹。
 4. 再次演示前点击 **CloudGrasp - Reset Cube**。也可以在 Gazebo 中移动方块，验证相机重新定位。
@@ -70,3 +70,28 @@ bash cloudgrasp_sim/scripts/build.sh
 ## 真实双目相机后续接入
 
 接入真实相机时，需要用其 ROS 2 驱动发布 `sensor_msgs/PointCloud2`，正确配置相机到机械臂基座的 TF，以及 `frame_id`、`range_field_name` 和工作空间过滤范围。不能直接用本仿真的固定相机外参控制真实机器人。本扩展只启动仿真控制器。
+
+## 不动、暂停或启动失败时
+
+先检查就绪状态：
+
+```bash
+bash cloudgrasp_sim/scripts/ready.sh --timeout 15
+```
+
+脚本检查仿真时钟是否递增、关节状态与点云是否新鲜、三个控制器是否激活，以及 MoveIt/感知动作服务是否可用。Gazebo 暂停时，请在其窗口恢复播放。其他启动问题可先停止，再启动：
+
+```bash
+/usr/bin/python3 cloudgrasp_sim/scripts/manage.py stop
+/usr/bin/python3 cloudgrasp_sim/scripts/manage.py start
+```
+
+`pick.sh` 现在自动执行上述检查，未就绪时在 15 秒内退出，不会进入无限等待。运行阶段还有 240 秒的墙钟超时；中断或失败时清理本次 ROS 子进程，避免遗留抓取锁。
+
+每次启动使用独立的 Gazebo 通信会话。如果需要自己执行 `gz` 调试命令，先运行：
+
+```bash
+source /root/gpufree-data/cloudgrasp_ws/logs/session.env
+```
+
+相机/关节等 ROS 话题名称保持不变。

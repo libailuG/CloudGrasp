@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <package format="3">
   <name>cloudgrasp_sim</name>
   <version>0.1.0</version>
@@ -25,4 +25,8 @@
   <export>
     <build_type>ament_cmake</build_type>
   </export>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>controller_manager_msgs</exec_depend>
+  <exec_depend>rosgraph_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
 </package>

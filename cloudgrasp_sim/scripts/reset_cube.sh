@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 WS="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
+if [[ -f "$WS/logs/session.env" ]]; then source "$WS/logs/session.env"; fi
 source /opt/ros/jazzy/setup.bash
 exec 9>"$WS/logs/pick.lock"
 flock -n 9 || { echo 'Wait for the current grasp to finish.'; exit 1; }

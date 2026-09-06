@@ -18,3 +18,20 @@ Build: all six workspace packages compiled on Jazzy. Python scripts and launch f
 Full runtime logs and sampled object trajectories remain on the server in `/root/gpufree-data/cloudgrasp_ws/logs/`. They are not included in the source patch.
 
 Negative test: move the target outside the camera field of view to (0.90, 0.60, 0.025). The system reported `No graspable box found in camera point cloud`, stopped before the pregrasp stage, and `pick.sh` returned exit code 1. The cube was reset to the normal initial position afterward.
+
+## 2026-09-06: restart and stalled-grasp repair
+
+- Observed failure: Gazebo world had no robot, controllers were unavailable,
+  ROS clock was stale, and an orphan grasp process retained the old shell lock.
+- Added explicit spawn world, per-run Gazebo partition, world-specific clock
+  bridge, bounded readiness checks, process-group shutdown, and a Python grasp
+  supervisor whose lock descriptor is not inherited by children.
+- Incremental `colcon build --symlink-install --packages-select cloudgrasp_sim`
+  passed; Python syntax, shell syntax, and `git diff --check` passed.
+- Paused-simulation negative check: pick exited 1 after the 15-second readiness
+  timeout without sending a grasp action; simulation then resumed.
+- Full simulated physical grasp passed: peak cube height 0.204853 m; final
+  position (0.449953, -0.249499, 0.025000) m. Motion and Gazebo displacement
+  both passed. No remaining grasp/watcher process; exclusive lock released.
+
+- Final managed stop/start passed readiness. A new grasp was already running when reset was requested; reset correctly refused to interfere.
