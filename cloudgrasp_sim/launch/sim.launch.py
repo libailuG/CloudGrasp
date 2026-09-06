@@ -31,5 +31,5 @@ def generate_launch_description():
       Node(package='moveit_ros_move_group', executable='move_group', parameters=[config.to_dict(),sim,{'publish_robot_description_semantic':True}], output='screen'),
       Node(package='simple_grasping', executable='basic_grasping_perception_node', parameters=[sim,{'debug_topics':True,'frame_id':'world','range_field_name':'x','voxel_leaf_size':0.003,'voxel_limit_min':-0.01,'voxel_limit_max':0.25}], remappings=[('/wrist_rgbd_depth_sensor/points','/camera/points')],output='screen'),
       Node(package='rviz2', executable='rviz2', arguments=['-d',str(p/'config/demo.rviz')],parameters=[config.to_dict(),sim],condition=IfCondition(LaunchConfiguration('rviz')),output='screen'),
-      IncludeLaunchDescription(PythonLaunchDescriptionSource(str(Path(get_package_share_directory('ros_gz_sim'))/'launch/gz_sim.launch.py')),launch_arguments={'gz_args':'-g'}.items(),condition=IfCondition(LaunchConfiguration('gui'))),
+      IncludeLaunchDescription(PythonLaunchDescriptionSource(str(Path(get_package_share_directory('ros_gz_sim'))/'launch/gz_sim.launch.py')),launch_arguments={'gz_args':['-g --gui-config ', str(p/'config/gazebo_gui.config')]}.items(),condition=IfCondition(LaunchConfiguration('gui'))),
     ])
