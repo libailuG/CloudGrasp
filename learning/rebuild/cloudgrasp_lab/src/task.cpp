@@ -1,3 +1,5 @@
+// Stage 07 complete reference, adapted from cloudgrasp_sim/vision_pick_place.cpp.
+// Study and replace one stage at a time; perception remains the source of grasp coordinates.
 #include <chrono>
 #include <cmath>
 #include <future>
@@ -66,7 +68,7 @@ void set_target(MoveGroup& arm,const rclcpp::Node::SharedPtr& node,const geometr
 int main(int argc,char** argv) {
   rclcpp::init(argc,argv);
   rclcpp::NodeOptions options; options.automatically_declare_parameters_from_overrides(true);
-  auto node=rclcpp::Node::make_shared("cloudgrasp_pick",options);
+  auto node=rclcpp::Node::make_shared("lab_task",options);
   auto logger=node->get_logger();
   rclcpp::executors::MultiThreadedExecutor executor; executor.add_node(node);
   std::thread spin([&]{executor.spin();}); int code=0;

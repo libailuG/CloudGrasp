@@ -1,0 +1,18 @@
+{
+  "C_Cpp.default.compileCommands": "${workspaceFolder}/../../build/compile_commands.json",
+  "cmake.configureOnOpen": false,
+  "terminal.integrated.profiles.linux": {
+    "CloudGrasp ROS 2": {
+      "path": "/bin/bash",
+      "args": [
+        "--rcfile",
+        "${workspaceFolder}/.vscode/ros.bashrc"
+      ]
+    }
+  },
+  "terminal.integrated.defaultProfile.linux": "CloudGrasp ROS 2",
+  "workbench.editorAssociations": {
+    "*.md": "default",
+    "*.markdown": "default"
+  }
+}

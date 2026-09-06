@@ -123,3 +123,7 @@ bash cloudgrasp_sim/scripts/ready.sh --timeout 15
 ```
 
 完成上述阶段后，再学习 TF 标定、真实双目深度/点云接入、相机内外参、真实机械臂驱动和抓取姿态生成。
+
+## 第二阶段：从代码逐步组装系统
+
+7 课入门完成后，按 [独立实现实践路线](rebuild/README.md) 逐关完成机械臂、控制、相机、MoveIt、障碍物、视觉和完整抓取。参考代码为独立 cloudgrasp_lab 包；教师测试记录与学员验收分开。

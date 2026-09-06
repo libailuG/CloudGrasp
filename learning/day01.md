@@ -53,17 +53,17 @@ bash cloudgrasp_sim/scripts/reset_cube.sh
 ## 本次学习记录
 
 - 已讲解：进入目录、启动命令及就绪提示的含义。
-- 当前进度：第 1 步启动成功；等待学员执行第 2 步抓取并反馈结果。
+- 当前进度：第 1 天完成；操作练习与概念复盘均已通过。
 - 学员实际操作结果：已执行启动命令，并反馈 READY 和 Simulation ready，确认启动成功。
 - 后续记录：根据实际反馈补充，不将演示或历史运行当作本次完成。
 
 ## 完成标准
 
 - [x] 能进入正确目录并确认仿真就绪。
-- [ ] 亲自运行抓取，观察动作并确认物理验证通过。
-- [ ] 抓取完成后重置方块。
-- [ ] 能停止仿真。
-- [ ] 能用自己的话解释 Gazebo 和 RViz 的区别。
+- [x] 亲自运行抓取，观察动作并确认物理验证通过。
+- [x] 抓取完成后重置方块。
+- [x] 能停止仿真。
+- [x] 能用自己的话解释 Gazebo 和 RViz 的区别。
 
 ### 第 1 步反馈：启动成功
 
@@ -88,3 +88,39 @@ Simulation ready. You can run pick.sh.
 
 清理残留并重新启动后，自动抓取返回 PHYSICAL_PICK_PLACE_PASS：方块最高高度 0.204463 m，最终位置约 (0.449927, -0.249607, 0.025000) m。已重置方块供学员再次练习。
 下一步由学员重新执行 pick.sh，观察 Gazebo 中方块抬升并反馈最终结果；本次自动验证不勾选学员抓取完成项。
+
+### 如何清理后台并重新启动
+
+在项目根目录逐条执行：
+
+```bash
+/usr/bin/python3 cloudgrasp_sim/scripts/manage.py stop
+/usr/bin/python3 cloudgrasp_sim/scripts/manage.py status
+pgrep -af '[g]z sim.*cloudgrasp_sim'
+```
+
+stop 清理项目管理的仿真进程组；如果启动管理进程已退出，还会按本工作空间路径和会话标记寻找残留 Gazebo 服务。status 应显示 Stopped，但它主要检查管理进程，不能单独证明没有残留。最后一条用于补充检查：没有输出表示未匹配到本项目的 Gazebo 进程；有输出则保存结果进一步排查，不要盲目结束所有 Python 或 Gazebo 进程。
+
+如果抓取脚本正在运行，先在运行 pick.sh 的终端按 Ctrl+C，等待其清理完成，再执行 stop。关闭终端窗口或只关闭图形窗口不等于完整停止仿真。
+
+清理完成后运行 manage.py start，等 READY 再运行 pick.sh。日常只用管理脚本启动一套仿真，避免再手动运行 start.sh 或额外的 gz sim。
+
+### 学员独立抓取：确认成功
+
+学员明确反馈终端出现 PASS，并在 Gazebo 中看到机械臂将方块搬到另一处。结合终端验证与物理场景观察，确认本次独立抓取完成。
+下一步：等待抓取脚本完全退出后执行 `bash cloudgrasp_sim/scripts/reset_cube.sh`，观察方块回到初始位置。该命令直接重置仿真物体位置，不是机械臂执行反向搬运。重置和停止步骤尚待学员反馈，不提前勾选。
+
+### 学员重置方块：确认成功
+
+学员反馈方块已回到原位，确认重置步骤完成。下一步由学员执行 manage.py stop、manage.py status，并用 pgrep 检查本项目 Gazebo 残留进程。停止结果尚待反馈。
+
+### 学员停止仿真：确认成功
+
+学员反馈 stop 输出 CloudGrasp stopped.，status 输出 Stopped，连续两次 pgrep 未显示匹配进程。确认停止与后台检查练习完成。
+第 1 天操作部分全部完成：启动 → 抓取并确认 PASS 与物体移动 → 重置 → 停止并检查。概念验收尚待回答：Gazebo 与 RViz 各自的作用，以及为什么仅看到 RViz 运动不能判断抓取成功。
+
+### 概念复盘：完成
+
+学员回答：RViz 是状态和规划显示，Gazebo 中才是运行的机械臂。已理解可视化与物理仿真的关键区别。
+补充：RViz 不仅显示规划轨迹，也可显示 /joint_states 等反馈数据、TF、点云；RViz 中运动不一定只是规划预览。Gazebo 中是物理仿真机械臂，并非真实硬件。抓取成功需要结合执行结果与仿真物体真实位移，本项目使用 PHYSICAL_PICK_PLACE_PASS 作最终验证。
+第 1 天全部完成。下一课：ROS 2 节点与话题，先用 ros2 node list 和 ros2 topic list 查看运行中的系统。
