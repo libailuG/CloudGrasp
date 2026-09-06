@@ -80,7 +80,7 @@ ros2 control list_controllers
 ```
 
 理解三件事：robot_state_publisher 发布模型/TF；ros_gz_sim create 创建 Gazebo 实体；joint_state_broadcaster 发布反馈。
-本关只激活状态广播器，不激活轨迹控制器，也不启动相机与 MoveIt。不要在本关发送运动命令。
+本关只激活状态广播器，不激活轨迹控制器，也不启动相机与 MoveIt。默认同时打开基础 RViz，显示 RobotModel，可勾选 TF 查看坐标轴；rviz:=false 可关闭它。第 4 关起改用带 MoveIt 面板的配置。不要在本关发送运动命令。
 验收：Gazebo 看见 UR5+夹爪；收到关节消息；控制器列表符合阶段配置。
 自己练习：给桌面换颜色，确认修改的是 visual，而不是机器人控制参数。
 
@@ -217,3 +217,9 @@ bash learning/rebuild/lab.sh pick
 切换阶段失败先检查旧终端是否输出 LAB_STOPPED；不要把实验域 42 的 ros2 命令与原域 0 混用。
 
 每关记录：代码改了什么、预期现象、实际输出、是否满足验收、问题原因与修复。验证过的范围见 `VALIDATION.md`。
+
+基础 RViz 配置在 cloudgrasp_lab/config/robot.rviz。它通过 /robot_description 加载模型，通过 TF 显示各连杆位置，不需要 MoveIt。注意始终在 /root/gpufree-data/cloudgrasp_ws 中构建，避免在 learning/rebuild 内生成第二套 build/install/log。
+
+## 滑条与按钮控制
+
+阶段 2 已支持桌面控制面板：`bash learning/rebuild/lab.sh panel`。具体使用与代码讲解见 [CONTROL_PANEL.md](CONTROL_PANEL.md)。

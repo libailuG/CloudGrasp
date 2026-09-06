@@ -1,48 +1,48 @@
 Panels:
-  - Class: rviz_common/Displays
-    Name: Displays
+- Class: rviz_common/Displays
+  Name: Displays
 Visualization Manager:
   Class: ''
   Global Options:
     Fixed Frame: world
     Background Color: 35; 40; 50
   Displays:
-    - Class: rviz_default_plugins/Grid
-      Name: Grid
-      Value: true
-      Plane Cell Count: 20
-      Cell Size: 0.1
-    - Class: moveit_rviz_plugin/MotionPlanning
-      Name: MotionPlanning
-      Enabled: true
-      Planning Group: ur_manipulator
-      Robot Description: robot_description
-      Planning Scene Topic: /monitored_planning_scene
-      Scene Robot:
-        Robot Alpha: 1
-    - Class: rviz_default_plugins/PointCloud2
-      Name: RGBD Camera
-      Enabled: true
-      Topic:
-        Value: /camera/points
-        Reliability Policy: Best Effort
-        Durability Policy: Volatile
-        Depth: 5
-      Size (Pixels): 2
-      Style: Points
-      Color Transformer: RGB8
-    - Class: rviz_default_plugins/PointCloud2
-      Name: Detected Object
-      Enabled: true
-      Topic:
-        Value: /object_cloud
-        Reliability Policy: Best Effort
-        Durability Policy: Volatile
-        Depth: 5
-      Size (Pixels): 5
-      Style: Points
-      Color Transformer: FlatColor
-      Color: 255; 255; 0
+  - Class: rviz_default_plugins/Grid
+    Name: Grid
+    Value: true
+    Plane Cell Count: 20
+    Cell Size: 0.1
+  - Class: moveit_rviz_plugin/MotionPlanning
+    Name: MotionPlanning
+    Enabled: true
+    Planning Group: ur_manipulator
+    Robot Description: robot_description
+    Planning Scene Topic: /monitored_planning_scene
+    Scene Robot:
+      Robot Alpha: 1
+  - Class: rviz_default_plugins/PointCloud2
+    Name: RGBD Camera
+    Enabled: true
+    Topic:
+      Value: /camera/points
+      Reliability Policy: Best Effort
+      Durability Policy: Volatile
+      Depth: 5
+    Size (Pixels): 2
+    Style: Points
+    Color Transformer: RGB8
+  - Class: rviz_default_plugins/PointCloud2
+    Name: Detected Object
+    Enabled: true
+    Topic:
+      Value: /object_cloud
+      Reliability Policy: Best Effort
+      Durability Policy: Volatile
+      Depth: 5
+    Size (Pixels): 5
+    Style: Points
+    Color Transformer: FlatColor
+    Color: 255; 255; 0
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
@@ -53,6 +53,12 @@ Visualization Manager:
         Z: 0.25
       Pitch: 0.65
       Yaw: 0.7
+  Tools:
+  - Class: rviz_default_plugins/MoveCamera
+  - Class: rviz_default_plugins/Interact
+  - Class: rviz_default_plugins/Select
+  - Class: rviz_default_plugins/FocusCamera
+  - Class: rviz_default_plugins/Measure
 Window Geometry:
   Width: 1100
   Height: 780

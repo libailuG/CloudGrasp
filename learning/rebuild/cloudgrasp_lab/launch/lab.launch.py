@@ -63,10 +63,12 @@ def setup(context):
     if stage >= 4:
         nodes.append(Node(package='moveit_ros_move_group', executable='move_group',
             parameters=[c.to_dict(),sim,{'publish_robot_description_semantic': True}], output='screen'))
-        if rviz:
-            nodes.append(Node(package='rviz2', executable='rviz2',
-                arguments=['-d',str(assets/'config/demo.rviz')],
-                parameters=[c.to_dict(),sim], output='screen'))
+    # RViz is a viewer in every stage; only later stages use its MoveIt panel.
+    if rviz:
+        display = assets/'config/demo.rviz' if stage >= 4 else lab/'config/robot.rviz'
+        params = [c.to_dict(),sim] if stage >= 4 else [c.robot_description,sim]
+        nodes.append(Node(package='rviz2', executable='rviz2',
+            arguments=['-d',str(display)],parameters=params,output='screen'))
     # 06/07: Perception first, then the complete reference grasp as a separate command.
     if stage >= 6:
         nodes.append(Node(package='simple_grasping', executable='basic_grasping_perception_node',

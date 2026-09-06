@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=CloudGrasp 机械臂控制
+Comment=滑条与按钮控制仿真机械臂
+Exec=bash /root/gpufree-data/cloudgrasp_ws/src/CloudGrasp/learning/rebuild/lab.sh panel
+Path=/root/gpufree-data/cloudgrasp_ws/src/CloudGrasp
+Icon=input-gaming
+Terminal=false
+Categories=Education;Science;
