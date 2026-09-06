@@ -37,7 +37,7 @@ def live_group(pgid):
     return False
 
 def stop_group(pid):
-    if os.getpgid(pid) != pid:
+    if Path(f'/proc/{pid}').exists() and os.getpgid(pid) != pid:
         raise SystemExit('Refusing to stop a process outside its own simulation group.')
     for sig, seconds in [(signal.SIGINT, 6), (signal.SIGTERM, 4), (signal.SIGKILL, 2)]:
         try:
@@ -53,6 +53,27 @@ def stop_group(pid):
         raise SystemExit('Simulation processes did not stop; refusing to start a second instance.')
     PID.unlink(missing_ok=True)
 
+def cleanup_leftover_servers():
+    # Only this workspace's Gazebo servers with our generated session marker.
+    groups = set()
+    world = str(WS / 'install/cloudgrasp_sim/share/cloudgrasp_sim/worlds/tabletop.sdf').encode()
+    for entry in Path('/proc').iterdir():
+        if not entry.name.isdigit():
+            continue
+        try:
+            command = (entry / 'cmdline').read_bytes()
+            if world not in command or b'gz' not in command:
+                continue
+            pgid = os.getpgid(int(entry.name))
+            marker = f'GZ_PARTITION=cloudgrasp_{os.getuid()}_{pgid}_'.encode()
+            if any(value.startswith(marker) for value in (entry / 'environ').read_bytes().split(b'\0')):
+                groups.add(pgid)
+        except (OSError, ValueError):
+            continue
+    for pgid in groups:
+        print(f'Stopping leftover CloudGrasp simulation group {pgid}.', flush=True)
+        stop_group(pgid)
+
 def ready(seconds):
     return subprocess.call(['bash', str(HERE / 'ready.sh'), '--timeout', str(seconds)]) == 0
 
@@ -66,6 +87,7 @@ with (LOG / 'sim-manager.lock').open('w') as lock:
             if not ready(8):
                 raise SystemExit('Simulation is not ready. Run manage.py stop, then manage.py start.')
         else:
+            cleanup_leftover_servers()
             with (LOG / 'sim.log').open('w') as out:
                 process = subprocess.Popen(['bash', str(HERE / 'start.sh')], stdout=out,
                     stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, start_new_session=True)
@@ -82,6 +104,7 @@ with (LOG / 'sim-manager.lock').open('w') as lock:
             stop_group(pid)
             print('CloudGrasp stopped.')
         else:
+            cleanup_leftover_servers()
             print('No managed simulation is running.')
     elif action == 'pick':
         if not running():

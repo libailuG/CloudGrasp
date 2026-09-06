@@ -35,3 +35,12 @@ Negative test: move the target outside the camera field of view to (0.90, 0.60, 
   both passed. No remaining grasp/watcher process; exclusive lock released.
 
 - Final managed stop/start passed readiness. A new grasp was already running when reset was requested; reset correctly refused to interfere.
+
+## Learning-session orphan-server regression
+
+A Gazebo server survived after its launch leader exited. A later session's
+motion report succeeded while its observed cube did not move (physical_pass=false).
+Manager now discovers leftover servers by this workspace's exact world path and
+its generated GZ_PARTITION process-group marker before starting another session.
+After removal and restart, physical grasp passed: peak 0.204463 m, final
+(0.449927, -0.249607, 0.025000) m. Cube reset for the learner.
